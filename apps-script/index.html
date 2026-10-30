@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal do Franqueado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+
+  
+
+  /* ============================================================
+     TOKENS
+     ============================================================ */
+  :root{
+    --accent: #00d700;
+    --green-dark: #00461e;
+    --ink: #1e281e;
+    --gray-1: #c8d2c8;
+    --gray-2: #96a096;
+    --text-secondary: #5b6b5f;
+    --amber: #ffb020;
+    --white: #ffffff;
+
+    --page-bg: #f4f6f4;
+    --card-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    --card-shadow-hover: 0 10px 24px rgba(0,0,0,0.09);
+
+    --radius-lg: 16px;
+    --radius-md: 12px;
+    --radius-sm: 8px;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin: 0;
+    min-height: 100vh;
+    background: var(--page-bg);
+    color: var(--ink);
+    font-family: 'Montserrat', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: normal;
+    font-stretch: normal;
+    margin: 0;
+    color: var(--ink);
+  }
+  a{ color: inherit; text-decoration: none; }
+  button{ font-family: inherit; }
+  img, svg{ max-width: 100%; }
+  :focus-visible{
+    outline: 3px solid var(--green-dark);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation: none !important; transition: none !important; }
+  }
+
+  /* ============================================================
+     CONTAINER
+     ============================================================ */
+  .container{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  /* ============================================================
+     NAVBAR (fundo escuro fixo)
+     ============================================================ */
+  .navbar{
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--ink);
+  }
+  .navbar-inner{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .brand{
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+  .brand .brand-text{
+    height: 22px;
+    width: auto;
+    display: block;
+  }
+  .nav-links{
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-links::-webkit-scrollbar{ display: none; }
+  .nav-link-btn{
+    background: none;
+    border: none;
+    padding: 9px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.75);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .nav-link-btn:hover{ color: var(--white); }
+  .nav-link-btn.active{
+    background: var(--accent);
+    color: var(--green-dark);
+  }
+
+  /* ============================================================
+     APP MAIN + VIEWS (SPA)
+     ============================================================ */
+  .app-main{ padding-top: 28px; padding-bottom: 8px; }
+  .view{ display: none; }
+
+  .view-title{ font-size: 1.75rem; margin-bottom: 6px; }
+  .view-subtitle{
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    margin: 0 0 28px;
+    font-weight: 500;
+  }
+
+  /* ---------- Tela: Início ---------- */
+  .hero{
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+    background-image:
+      /* overlay escuro por cima, para o texto ficar legível */
+      linear-gradient(135deg, rgba(30,40,30,0.8) 0%, rgba(30,40,30,0.2) 100%),
+      /* manchas orgânicas (mesh gradient 100% CSS, sem imagem externa) */
+      radial-gradient(ellipse 55% 60% at 10% 20%, rgba(0,215,0,0.65) 0%, rgba(0,215,0,0) 60%),
+      radial-gradient(ellipse 45% 50% at 82% 8%, rgba(0,215,0,0.4) 0%, rgba(0,215,0,0) 55%),
+      radial-gradient(ellipse 60% 65% at 92% 78%, rgba(30,40,30,0.95) 0%, rgba(30,40,30,0) 60%),
+      radial-gradient(ellipse 50% 55% at 22% 88%, rgba(0,215,0,0.5) 0%, rgba(0,215,0,0) 55%),
+      radial-gradient(ellipse 65% 70% at 60% 45%, rgba(0,110,45,0.55) 0%, rgba(0,110,45,0) 65%),
+      radial-gradient(ellipse 40% 45% at 45% 5%, rgba(30,40,30,0.6) 0%, rgba(30,40,30,0) 55%),
+      linear-gradient(160deg, #00461e 0%, #013319 100%);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 36px;
+  }
+  .hero-content{ padding: 44px; max-width: 560px; }
+  .hero-content h1{
+    color: var(--white);
+    font-size: clamp(28px, 5vw, 42px);
+    line-height: 1.05;
+  }
+
+  .home-grid{
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+  @media (max-width: 780px){
+    .home-grid{ grid-template-columns: 1fr; }
+  }
+
+  /* ---------- Coluna direita: container compactado (links + banner + trilhas) ---------- */
+  .home-col-main{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .action-grid{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 480px){
+    .action-grid{ grid-template-columns: 1fr; }
+  }
+  .quick-links-grid{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 14px;
+  }
+  .quick-links-grid .action-card{
+    grid-column: span 2;
+    width: 100%;
+    min-width: 0;
+    padding: 16px 18px;
+    height: auto;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+  }
+  .quick-links-grid .action-card:nth-child(4),
+  .quick-links-grid .action-card:nth-child(5){
+    grid-column: span 3;
+  }
+  .quick-links-grid .action-icon{ width: 36px; height: 36px; }
+  .quick-links-grid .action-icon svg{ width: 18px; height: 18px; }
+  .quick-links-grid .action-label{
+    font-size: 14px;
+    line-height: 1.25;
+    white-space: normal;
+  }
+  @media (max-width: 640px){
+    .quick-links-grid{ grid-template-columns: repeat(2, 1fr); }
+    .quick-links-grid .action-card,
+    .quick-links-grid .action-card:nth-child(4),
+    .quick-links-grid .action-card:nth-child(5){ grid-column: span 1; }
+  }
+  @media (max-width: 400px){
+    .quick-links-grid{ grid-template-columns: 1fr; }
+  }
+  .action-card{
+    height: 140px;
+    padding: 22px;
+    border-radius: var(--radius-md);
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  .action-card:hover, .action-card:focus-visible{ transform: translateY(-3px); }
+  .action-grid .action-card{
+    height: 100px;
+    padding: 20px 24px;
+  }
+
+  .action-card.is-light{
+    background: var(--white);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .action-card.is-light:hover{ box-shadow: var(--card-shadow-hover); }
+  .action-icon{
+    font-size: 18px;
+    color: var(--green-dark);
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e6fae6;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+  }
+  .action-icon svg{ width: 20px; height: 20px; }
+  .action-label{ font-weight: 700; color: var(--ink); font-size: 14.5px; text-align: left; }
+
+  .action-card.is-primary{ background: var(--accent); color: var(--green-dark); }
+  .action-card.is-green{ background: var(--green-dark); color: var(--white); }
+  .action-card.is-primary:hover, .action-card.is-green:hover{
+    box-shadow: 0 14px 28px -12px rgba(0,215,0,0.45);
+  }
+  .action-card.is-primary svg, .action-card.is-green svg{ width: 24px; height: 24px; flex-shrink: 0; }
+  .action-card .action-title{ font-family: 'Montserrat', sans-serif; font-weight: normal; font-size: 16px; text-align: left; }
+
+  /* ---------- Cabeçalho "Escolha sua Trilha" (mesh gradient, entre os links rápidos e os botões grandes) ---------- */
+  .trail-intro{
+    background-image:
+      linear-gradient(135deg, rgba(30,40,30,0.75) 0%, rgba(30,40,30,0.15) 100%),
+      radial-gradient(circle at 12% 18%, rgba(0,215,0,0.35) 0%, rgba(0,215,0,0) 45%),
+      radial-gradient(circle at 88% 82%, rgba(0,215,0,0.3) 0%, rgba(0,215,0,0) 45%),
+      linear-gradient(160deg, #00461e 0%, #1e281e 100%);
+    border-radius: 16px;
+    padding: 16px 24px;
+    color: var(--white);
+  }
+  .trail-intro h3{
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+    margin: 0 0 6px;
+  }
+  .trail-intro p{
+    font-size: 13px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.75);
+    margin: 0;
+  }
+
+  /* ---------- Mini calendário "Calendário de Treinamentos" (coluna esquerda da Início) ---------- */
+  .mini-calendar{
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--card-shadow);
+    padding: 22px 20px;
+  }
+  .mc-title{
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+  .mc-nav{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 14px;
+    font-size: 13.5px;
+    color: var(--ink);
+  }
+  .mc-nav i{ font-size: 11px; color: var(--gray-2); }
+  .mc-nav svg{ width: 9px; height: 9px; color: var(--gray-2); flex-shrink: 0; }
+  .mc-nav strong{ font-weight: 700; }
+  .mc-grid{
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-bottom: 18px;
+  }
+  .mc-dow{
+    text-align: center;
+    font-size: 9.5px;
+    font-weight: 600;
+    color: var(--gray-2);
+    padding-bottom: 4px;
+  }
+  .mc-day{
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11.5px;
+    color: var(--text-secondary);
+    border-radius: 6px;
+  }
+  .mc-day.empty{ visibility: hidden; }
+  .mc-day.highlight{
+    background: var(--accent);
+    color: var(--white);
+    font-weight: 700;
+    border-radius: 6px;
+  }
+  .mc-day.holiday{
+    background: var(--text-secondary);
+    color: var(--white);
+    font-weight: 700;
+    border-radius: 6px;
+  }
+  .mc-day.dia-adjacente{ color: var(--gray-1); font-weight: 400; }
+  .mc-events{
+    display: flex;
+    flex-direction: column;
+  }
+  .mc-event{
+    background: #f5f5f5;
+    border-left: 4px solid var(--accent);
+    padding: 11px 13px;
+  }
+  .mc-event.is-neutral{ border-left-color: var(--gray-2); }
+  .mc-event + .mc-event{ border-top: 1px solid rgba(0,0,0,0.05); }
+  .mc-event:first-child{ border-radius: 8px 8px 0 0; }
+  .mc-event:last-child{ border-radius: 0 0 8px 8px; }
+  .mc-event-date{
+    font-size: 10.5px;
+    font-weight: 700;
+    margin-bottom: 3px;
+    letter-spacing: 0.02em;
+  }
+  .mc-event.is-neutral .mc-event-date{ color: var(--gray-2); }
+  .mc-event:not(.is-neutral) .mc-event-date{ color: var(--green-dark); }
+  .mc-event-text{
+    font-size: 12.5px;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+
+  /* ---------- Cabeçalho de trilha (Programa A / Programa B) ---------- */
+  .track-header{
+    background: linear-gradient(135deg, var(--accent) 0%, var(--green-dark) 100%);
+    border-radius: var(--radius-lg);
+    padding: 30px 32px;
+    margin-bottom: 28px;
+    color: var(--white);
+  }
+  .track-header h2{ color: var(--white); font-size: 1.75rem; margin-bottom: 6px; }
+  .track-header p{ margin: 0; color: rgba(255,255,255,0.9); font-size: 13.5px; font-weight: 500; }
+  .track-header.is-connected{ margin-bottom: 0; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+
+  /* ---------- Mesh gradients dos banners (mesma base escura do hero da Início, luz verde reposicionada por página) ---------- */
+
+  /* Programa A — luz nos cantos opostos (superior-esquerdo e inferior-direito) */
+  .hero-programaa{
+    background-image:
+      linear-gradient(135deg, rgba(30,40,30,0.75) 0%, rgba(30,40,30,0.15) 100%),
+      radial-gradient(circle at 0% 0%, rgba(0,215,0,0.6) 0%, rgba(0,215,0,0) 48%),
+      radial-gradient(circle at 100% 100%, rgba(0,215,0,0.55) 0%, rgba(0,215,0,0) 48%),
+      radial-gradient(ellipse 55% 60% at 70% 20%, rgba(30,40,30,0.6) 0%, rgba(30,40,30,0) 55%),
+      radial-gradient(ellipse 55% 60% at 25% 80%, rgba(30,40,30,0.55) 0%, rgba(30,40,30,0) 55%),
+      linear-gradient(160deg, #00461e 0%, #1e281e 100%);
+  }
+
+  /* Programa B — luz centralizada na base, com um foco suave no canto superior-direito */
+  .hero-programab{
+    background-image:
+      linear-gradient(135deg, rgba(30,40,30,0.75) 0%, rgba(30,40,30,0.15) 100%),
+      radial-gradient(circle at 50% 100%, rgba(0,215,0,0.6) 0%, rgba(0,215,0,0) 52%),
+      radial-gradient(circle at 100% 0%, rgba(0,215,0,0.3) 0%, rgba(0,215,0,0) 42%),
+      radial-gradient(ellipse 60% 65% at 20% 25%, rgba(30,40,30,0.65) 0%, rgba(30,40,30,0) 58%),
+      radial-gradient(ellipse 50% 55% at 80% 75%, rgba(30,40,30,0.55) 0%, rgba(30,40,30,0) 55%),
+      linear-gradient(160deg, #00461e 0%, #1e281e 100%);
+  }
+
+  /* Calendário Anual — brilho varrendo toda a borda esquerda, com um ponto difuso centro-direita */
+  .hero-anual{
+    background-image:
+      linear-gradient(135deg, rgba(30,40,30,0.75) 0%, rgba(30,40,30,0.15) 100%),
+      radial-gradient(ellipse 35% 100% at 0% 50%, rgba(0,215,0,0.55) 0%, rgba(0,215,0,0) 60%),
+      radial-gradient(circle at 75% 50%, rgba(0,215,0,0.35) 0%, rgba(0,215,0,0) 48%),
+      radial-gradient(ellipse 55% 60% at 60% 15%, rgba(30,40,30,0.6) 0%, rgba(30,40,30,0) 55%),
+      radial-gradient(ellipse 55% 60% at 55% 90%, rgba(30,40,30,0.55) 0%, rgba(30,40,30,0) 55%),
+      linear-gradient(160deg, #00461e 0%, #1e281e 100%);
+  }
+
+  /* ---------- Painel genérico (usado nas telas de programa / anual / inscritos) ---------- */
+  .screen-panel{
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--card-shadow);
+    padding: 28px;
+  }
+  @media (max-width: 600px){
+    .screen-panel{ padding: 20px; }
+  }
+  .screen-panel.is-connected{ border-radius: 0 0 var(--radius-lg) var(--radius-lg); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+
+  /* ---------- Pill tabs (semanas + inscritos) ---------- */
+  .pill-tabs{
+    display: inline-flex;
+    background: var(--page-bg);
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 999px;
+    padding: 4px;
+    gap: 4px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+  }
+  .pill-tab-btn{
+    background: none;
+    border: none;
+    padding: 9px 18px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .pill-tab-btn.active{ background: var(--green-dark); color: var(--white); }
+  .tab-panel{ display: none; }
+  .tab-panel.active{ display: block; }
+
+  /* ---------- Cronograma semanal: grid rígido de 5 colunas ---------- */
+  .week-grid{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 900px){
+    .week-grid{ grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px){
+    .week-grid{ grid-template-columns: 1fr; }
+  }
+
+  .day-card{
+    background: var(--white);
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: var(--radius-md);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: var(--card-shadow);
+  }
+  .day-name{
+    font-size: 13.5px;
+    font-weight: normal;
+    color: var(--ink);
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+  }
+  .day-blocks{ display: flex; flex-direction: column; gap: 8px; }
+  .time-block{
+    background: var(--page-bg);
+    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: var(--radius-sm);
+    padding: 10px 11px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .block-time{ font-size: 10.5px; font-weight: 600; color: var(--text-secondary); }
+  .block-title{ font-size: 12.5px; font-weight: 700; color: var(--ink); line-height: 1.3; }
+  .tag{
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    width: fit-content;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 700;
+  }
+  .tag-live{ background: var(--accent); color: var(--green-dark); }
+  .tag-live i{ font-size: 6px; animation: pulse-dot 1.6s ease-in-out infinite; }
+  @keyframes pulse-dot{ 0%, 100%{ opacity: 1; } 50%{ opacity: 0.35; } }
+  .tag-curso{ background: var(--green-dark); color: var(--white); }
+  .tag-rota{ background: var(--amber); color: var(--ink); }
+  .tag-feriado{ background: var(--ink); color: var(--white); }
+  .tag-rotina{ background: #f0f0f0; color: var(--ink); }
+
+  .day-card.is-empty .day-blocks.empty-state{
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--text-secondary);
+    gap: 6px;
+    padding: 18px 0;
+  }
+  .day-blocks.empty-state i{ font-size: 18px; opacity: 0.5; }
+  .day-blocks.empty-state p{ margin: 0; font-size: 12px; }
+
+  /* ---------- Visão anual: banner (idêntico ao das outras páginas) ---------- */
+  .annual-single-wrap{
+    width: 100%;
+  }
+
+  .month-card{
+    width: 100%;
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+  }
+  .month-card.is-connected{ border-radius: 0 0 16px 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+
+  /* ---------- Cabeçalho do card: branco, integrado, com a navegação de mês ---------- */
+  .month-card-header{
+    padding: 26px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .month-nav-group{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .month-nav-arrow{
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border-radius: 999px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .month-nav-arrow svg{ width: 14px; height: 14px; }
+  .month-nav-arrow:hover, .month-nav-arrow:focus-visible{
+    background: #e6fae6;
+    color: var(--green-dark);
+  }
+  .month-name-big{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: normal;
+    font-stretch: normal;
+    font-size: 26px;
+    color: var(--green-dark);
+  }
+  .month-badge-wrap{ display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+  .month-badge{
+    display: inline-block;
+    background: var(--gray-1);
+    color: var(--ink);
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 4px 11px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .month-daterange{ font-size: 12.5px; font-weight: 600; color: var(--text-secondary); white-space: nowrap; }
+
+  /* ---------- Corpo do card: grid do calendário (65%) + feriados (35%) ---------- */
+  .month-body{
+    display: grid;
+    grid-template-columns: 65% 35%;
+  }
+  @media (max-width: 700px){
+    .month-body{ grid-template-columns: 1fr; }
+  }
+
+  .month-grid{ display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; padding: 36px 44px 40px; }
+  .month-grid .dow{ text-align: center; font-size: 13px; font-weight: 700; color: var(--accent); padding-bottom: 8px; }
+  .day-cell{
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 8px;
+    color: var(--ink);
+  }
+  .day-cell.empty{ visibility: hidden; }
+  .day-cell.training{ background: #c8e6c9; color: var(--ink); font-weight: 700; }
+  .day-cell.holiday{ background: var(--ink); color: var(--white); font-weight: 700; }
+  .day-cell.dia-adjacente{ color: var(--gray-1); font-weight: 400; }
+
+  /* ---------- Barra lateral de feriados ---------- */
+  .holidays-sidebar{
+    background: #f5f5f5;
+    padding: 36px 32px;
+    border-left: 1px solid rgba(0,0,0,0.05);
+  }
+  @media (max-width: 700px){
+    .holidays-sidebar{ border-left: none; border-top: 1px solid rgba(0,0,0,0.05); }
+  }
+  .holidays-title{
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0 0 18px;
+  }
+  .holiday-list{ display: flex; flex-direction: column; gap: 14px; }
+  .holiday-item{ display: flex; align-items: flex-start; gap: 10px; }
+  .holiday-icon{
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: var(--white);
+    color: var(--green-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .holiday-icon svg{ width: 14px; height: 14px; }
+  .holiday-text{ display: flex; flex-direction: column; gap: 2px; }
+  .holiday-day{ font-size: 12.5px; font-weight: 700; color: var(--green-dark); }
+  .holiday-name{ font-size: 12.5px; color: var(--text-secondary); line-height: 1.35; }
+  .holiday-empty{ font-size: 12.5px; color: var(--text-secondary); font-style: italic; margin: 0; }
+
+  @media (max-width: 480px){
+    .month-card-header{ padding: 20px; }
+    .month-nav-group{ gap: 10px; }
+    .month-name-big{ font-size: 20px; }
+    .month-badge-wrap{ align-items: flex-start; }
+    .month-grid{ padding: 20px 18px 22px; gap: 6px; }
+    .holidays-sidebar{ padding: 20px 18px; }
+  }
+
+  /* ---------- Tabela de inscritos ---------- */
+  .table-shell{
+    background: var(--white);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+  table{ width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th{
+    background: #f5f5f5;
+    color: var(--green-dark);
+    text-align: left;
+    padding: 13px 16px;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  tbody td{ padding: 12px 16px; border-bottom: 1px solid #eee; color: var(--ink); }
+  tbody tr{ transition: background 0.15s ease; }
+  tbody tr:hover{ background: #f5f5f5; }
+  tbody tr:last-child td{ border-bottom: none; }
+  .status-msg{ padding: 24px 16px; text-align: center; color: var(--text-secondary); font-size: 13px; }
+  .status-msg i{ margin-right: 8px; }
+  .badge{ display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+  .badge-novos{ background: rgba(0,215,0,0.16); color: var(--green-dark); }
+  .badge-troca{ background: rgba(255,176,32,0.2); color: #8a5a00; }
+  .badge-legado{ background: rgba(150,160,150,0.22); color: var(--text-secondary); }
+  .table-wrap{ overflow-x: auto; }
+
+  footer{
+    padding: 26px 20px 40px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 12px;
+  }
+
+  @media (max-width: 600px){
+    .container{ padding: 16px; }
+    .app-main{ padding-top: 22px; }
+    .view-title{ font-size: 1.5rem; }
+    .hero-content{ padding: 28px; }
+  }
+
+.brand-text{ font-weight:800; font-size:18px; letter-spacing:.3px; }
+</style>
+</head>
+<body>
+
+<? if (!accessGranted) { ?>
+  <div style="min-height:100vh; display:flex; align-items:center; justify-content:center; background:var(--page-bg); padding:24px;">
+    <div style="max-width:440px; text-align:center; background:var(--white); border-radius:var(--radius-lg); box-shadow:var(--card-shadow); padding:40px 32px;">
+      <div style="font-family:'Montserrat', sans-serif; font-size:20px; color:var(--green-dark); margin-bottom:20px;">Portal do Franqueado</div>
+      <div style="width:56px; height:56px; margin:0 auto 16px; border-radius:50%; background:#fdece7; color:#c0392b; display:flex; align-items:center; justify-content:center; font-size:24px;"><i class="fa-solid fa-lock"></i></div>
+      <h2 style="margin-bottom:10px;">Acesso restrito</h2>
+      <p>Este é o Portal do Franqueado. O acesso é restrito a contas Google dos domínios <code>@suaempresa.com.br</code> e <code>@parceiros.com.br</code>.</p>
+      <? if (userEmail) { ?>
+        <p>Você entrou com <strong><?= userEmail ?></strong>, que não pertence a um domínio autorizado.</p>
+      <? } else { ?>
+        <p>Não foi possível identificar sua conta Google. Confirme que está logado com uma conta Google antes de abrir este link novamente.</p>
+      <? } ?>
+      <p style="margin-top:20px; font-size:12.5px;">Se você acredita que deveria ter acesso, entre em contato com a equipe responsável pelo treinamento.</p>
+    </div>
+  </div>
+<? } else { ?>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <button class="brand" data-view="inicio" aria-label="Início">
+      <span class="brand-text">Portal do Franqueado</span>
+    </button>
+    <div class="nav-links">
+      <button class="nav-link-btn active" data-view="inicio">Início</button>
+      <button class="nav-link-btn" data-view="programaa">Programa A</button>
+      <button class="nav-link-btn" data-view="programab">Programa B</button>
+      <button class="nav-link-btn" data-view="anual">Calendário Anual</button>
+      <button class="nav-link-btn" data-view="inscritos">Inscritos</button>
+    </div>
+  </div>
+</nav>
+
+<main class="container app-main">
+
+  <!-- ============ TELA 1: INÍCIO ============ -->
+  <section id="view-inicio" class="view">
+    <div class="hero">
+      <div class="hero-content">
+        <h1>BEM-VINDO AO PORTAL 2026</h1>
+      </div>
+    </div>
+
+    <div class="home-grid">
+
+      <!-- Coluna esquerda: mini calendário -->
+      <div class="home-col-side">
+        <div class="mini-calendar">
+          <h3 class="mc-title">Calendário de Treinamentos</h3>
+
+          <div class="mc-nav">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15 4 7 12l8 8 1.4-1.4L9.8 12l6.6-6.6L15 4Z"/></svg>
+            <span>Set <strong>2026</strong></span>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 4l8 8-8 8-1.4-1.4L14.2 12 7.6 5.4 9 4Z"/></svg>
+          </div>
+
+          <div class="mc-grid">
+            <span class="mc-dow">Dom</span><span class="mc-dow">Seg</span><span class="mc-dow">Ter</span><span class="mc-dow">Qua</span><span class="mc-dow">Qui</span><span class="mc-dow">Sex</span><span class="mc-dow">Sáb</span>
+
+            <span class="mc-day empty"></span><span class="mc-day empty"></span><span class="mc-day highlight">1</span><span class="mc-day highlight">2</span><span class="mc-day highlight">3</span><span class="mc-day highlight">4</span><span class="mc-day">5</span>
+
+            <span class="mc-day">6</span><span class="mc-day holiday">7</span><span class="mc-day highlight">8</span><span class="mc-day highlight">9</span><span class="mc-day highlight">10</span><span class="mc-day highlight">11</span><span class="mc-day">12</span>
+
+            <span class="mc-day">13</span><span class="mc-day highlight">14</span><span class="mc-day">15</span><span class="mc-day">16</span><span class="mc-day">17</span><span class="mc-day">18</span><span class="mc-day">19</span>
+
+            <span class="mc-day">20</span><span class="mc-day">21</span><span class="mc-day">22</span><span class="mc-day">23</span><span class="mc-day">24</span><span class="mc-day">25</span><span class="mc-day">26</span>
+
+            <span class="mc-day">27</span><span class="mc-day">28</span><span class="mc-day">29</span><span class="mc-day">30</span><span class="mc-day empty"></span><span class="mc-day empty"></span><span class="mc-day empty"></span>
+          </div>
+
+          <div class="mc-events">
+            <div class="mc-event is-neutral">
+              <div class="mc-event-date">07 SET</div>
+              <div class="mc-event-text">Independência do Brasil</div>
+            </div>
+            <div class="mc-event">
+              <div class="mc-event-date">01 a 14 SET</div>
+              <div class="mc-event-text">Treinamento Programa A &amp; Programa B</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coluna direita: links rápidos + atalhos das trilhas -->
+      <div class="home-col-main">
+        <div class="quick-links-grid">
+          <a class="action-card is-light" href="#" target="_blank" rel="noopener">
+            <span class="action-icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3 1 9l11 6 9-4.9V17h2V9L12 3Z"/><path d="M5 13.2V17c0 1.7 3.1 4 7 4s7-2.3 7-4v-3.8l-7 3.8-7-3.8Z"/></svg></span>
+            <span class="action-label">Plataforma de Cursos</span>
+          </a>
+          <a class="action-card is-light" href="#" target="_blank" rel="noopener">
+            <span class="action-icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm8 1.5V8h4.5L14 3.5ZM7 12h10v1.5H7V12Zm0 4h10v1.5H7V16Zm0-8h6v1.5H7V8Z"/></svg></span>
+            <span class="action-label">Glossário</span>
+          </a>
+          <a class="action-card is-light" href="#" target="_blank" rel="noopener">
+            <span class="action-icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 20v-7h4v7H3Zm7 0V4h4v16h-4Zm7 0v-9h4v9h-4Z"/></svg></span>
+            <span class="action-label">Dash de Acompanhamento</span>
+          </a>
+          <a class="action-card is-light" href="#" target="_blank" rel="noopener">
+            <span class="action-icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M2 4.5A1.5 1.5 0 0 1 3.5 3H10a2 2 0 0 1 2 2v15a1.5 1.5 0 0 0-1.5-1.5H3.5A1.5 1.5 0 0 1 2 17V4.5Zm20 0A1.5 1.5 0 0 0 20.5 3H14a2 2 0 0 0-2 2v15a1.5 1.5 0 0 1 1.5-1.5h6.5a1.5 1.5 0 0 0 1.5-1.5V4.5Z"/></svg></span>
+            <span class="action-label">Book do Franqueado</span>
+          </a>
+          <a class="action-card is-light" href="#" target="_blank" rel="noopener">
+            <span class="action-icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 2h11a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1Zm-3 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2Zm0 4a1 1 0 1 1 0 2 1 1 0 0 1 0-2Zm0 4a1 1 0 1 1 0 2 1 1 0 0 1 0-2Zm0 4a1 1 0 1 1 0 2 1 1 0 0 1 0-2ZM9 8h7v1.5H9V8Zm0 4h7v1.5H9V12Zm0 4h5v1.5H9V16Z"/></svg></span>
+            <span class="action-label">Apostila do Programa A</span>
+          </a>
+        </div>
+
+        <div class="trail-intro">
+          <h3>Escolha sua Trilha de Formação</h3>
+          <p>Acesse a agenda da sua área e programe-se para os próximos treinamentos.</p>
+        </div>
+
+        <div class="action-grid" id="entry-row">
+          <button class="action-card is-primary" data-view="programaa">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 3 14h6l-1 8 11-13h-7l1-7Z"/></svg>
+            <span class="action-title">Ir para Programa A</span>
+          </button>
+          <button class="action-card is-green" data-view="programab">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 3 14h6l-1 8 11-13h-7l1-7Z"/></svg>
+            <span class="action-title">Ir para Programa B</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ TELA 2: PROGRAMA A ============ -->
+  <section id="view-programaa" class="view">
+    <div class="track-header is-connected hero-programaa">
+      <h2>Programa A</h2>
+      <p><span id="mes-atual-programaa"></span> · Equipe Comercial</p>
+    </div>
+
+    <div class="screen-panel is-connected">
+      <div class="pill-tabs week-tabs" data-program="programaA" role="tablist" id="tabs-programaA">
+        <!-- Botões de semana gerados dinamicamente via JavaScript, a partir dos dados reais da turma atual -->
+      </div>
+      <div class="week-grid" id="week-cards-programaA">
+        <!-- Preenchido dinamicamente via JavaScript a partir do Calendário Semanal real (planilha) -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TELA 3: PROGRAMA B ============ -->
+  <section id="view-programab" class="view">
+    <div class="track-header is-connected hero-programab">
+      <h2>Programa B</h2>
+      <p><span id="mes-atual-programab"></span> · Equipe Logística</p>
+    </div>
+
+    <div class="screen-panel is-connected">
+      <div class="pill-tabs week-tabs" data-program="programaB" role="tablist" id="tabs-programaB">
+        <!-- Botões de semana gerados dinamicamente via JavaScript, a partir dos dados reais da turma atual -->
+      </div>
+      <div class="week-grid" id="week-cards-programaB">
+        <!-- Preenchido dinamicamente via JavaScript a partir do Calendário Semanal real (planilha) -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TELA 4: CALENDÁRIO ANUAL ============ -->
+  <section id="view-anual" class="view">
+    <div class="track-header is-connected hero-anual">
+      <h2>Calendário Anual 2026</h2>
+      <p>Todas as turmas de Programa A e Programa B, mês a mês. Sessões 100% online.</p>
+    </div>
+
+    <div class="annual-single-wrap">
+      <div class="month-card is-connected" id="month-card-single">
+        <div class="month-card-header">
+          <div class="month-nav-group">
+            <button class="month-nav-arrow" id="mes-prev" aria-label="Mês anterior">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15 4 7 12l8 8 1.4-1.4L9.8 12l6.6-6.6L15 4Z"/></svg>
+            </button>
+            <span class="month-name-big" id="mc-month-name">Mês</span>
+            <button class="month-nav-arrow" id="mes-next" aria-label="Próximo mês">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9 4l8 8-8 8-1.4-1.4L14.2 12 7.6 5.4 9 4Z"/></svg>
+            </button>
+          </div>
+          <div class="month-badge-wrap">
+            <span class="month-badge">Programa A &amp; Programa B</span>
+            <span class="month-daterange" id="mc-month-label">Data</span>
+          </div>
+        </div>
+        <div class="month-body">
+          <div class="month-grid" id="mc-month-grid">
+            <!-- Preenchido dinamicamente via JavaScript a partir de meses2026 -->
+          </div>
+          <div class="holidays-sidebar">
+            <h3 class="holidays-title">Feriados do mês</h3>
+            <div class="holiday-list" id="mc-holidays-list">
+              <!-- Preenchido dinamicamente via JavaScript a partir de meses2026 -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============ TELA 5: INSCRITOS ============ -->
+  <section id="view-inscritos" class="view">
+    <h2 class="view-title">Inscritos do mês</h2>
+    <p class="view-subtitle">Listas atualizadas automaticamente a partir das planilhas de inscrição.</p>
+
+    <div class="screen-panel">
+      <div class="pill-tabs" role="tablist">
+        <button class="pill-tab-btn active" id="tab-programaa" role="tab" aria-selected="true" aria-controls="panel-programaa">Programa A</button>
+        <button class="pill-tab-btn" id="tab-programab" role="tab" aria-selected="false" aria-controls="panel-programab">Programa B</button>
+      </div>
+
+      <div class="tab-panel active" id="panel-programaa" role="tabpanel">
+        <div class="table-shell">
+          <div class="table-wrap">
+            <table id="table-programaa">
+              <thead>
+                <tr><th>Nome</th><th>Franquia</th><th>Função</th><th>Etiqueta</th></tr>
+              </thead>
+              <tbody>
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="panel-programab" role="tabpanel">
+        <div class="table-shell">
+          <div class="table-wrap">
+            <table id="table-programab">
+              <thead>
+                <tr><th>Nome</th><th>Franquia</th><th>Função</th><th>Etiqueta</th></tr>
+              </thead>
+              <tbody>
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Portal do Franqueado. Atualizado com os calendários de 2026.
+</footer>
+
+<script>
+(function(){
+
+  /* ============================================================
+     DADOS REAIS — injetados pelo servidor (Code.gs / doGet). Cada fonte
+     foi lida com tratamento de erro individual; se algo vier vazio/nulo,
+     confira window.DADOS.erros no console (F12) para o motivo exato
+     (geralmente falta de compartilhamento de alguma planilha).
+     ============================================================ */
+  var DADOS = <?!= dadosJson ?>;
+  if (DADOS.erros && DADOS.erros.length) {
+    console.warn('Portal Start\'s — erros ao carregar dados:', DADOS.erros);
+  }
+
+  /* ============================================================
+     VIEW MANAGER (SPA) — mostra uma "tela" por vez
+     ============================================================ */
+  var VIEWS = ['inicio', 'programaa', 'programab', 'anual', 'inscritos'];
+
+  function showView(view){
+    VIEWS.forEach(function(v){
+      var el = document.getElementById('view-' + v);
+      if (el) el.style.display = (v === view) ? 'block' : 'none';
+    });
+    document.querySelectorAll('.nav-link-btn').forEach(function(btn){
+      var isActive = btn.getAttribute('data-view') === view;
+      btn.classList.toggle('active', isActive);
+    });
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  document.querySelectorAll('[data-view]').forEach(function(el){
+    el.addEventListener('click', function(){
+      showView(el.getAttribute('data-view'));
+    });
+  });
+
+  showView('inicio');
+
+  /* ---------- Calendário Anual: estrutura fixa do calendário civil 2026
+     (dias no mês / dia da semana em que começa) + feriados nacionais
+     (fatos públicos, não vêm de planilha) — só "label" e "treino" (quais
+     dias exatos têm aula) são calculados a partir de DADOS.calendarioAnual
+     (aba Calendario_Anual da planilha), logo abaixo. ---------- */
+  const MESES_BASE = [
+    { id: 0, nome: "Janeiro", dias: 31, inicioSemana: 4, prevDias: 31, feriados: [{dia: 1, nome: "Ano Novo"}] },
+    { id: 1, nome: "Fevereiro", dias: 28, inicioSemana: 0, prevDias: 31, feriados: [{dia: 17, nome: "Carnaval"}] },
+    { id: 2, nome: "Março", dias: 31, inicioSemana: 0, prevDias: 28, feriados: [] },
+    { id: 3, nome: "Abril", dias: 30, inicioSemana: 3, prevDias: 31, feriados: [{dia: 3, nome: "Paixão de Cristo"}, {dia: 21, nome: "Tiradentes"}] },
+    { id: 4, nome: "Maio", dias: 31, inicioSemana: 5, prevDias: 30, feriados: [{dia: 1, nome: "Dia do Trabalhador"}] },
+    { id: 5, nome: "Junho", dias: 30, inicioSemana: 1, prevDias: 31, feriados: [] },
+    { id: 6, nome: "Julho", dias: 31, inicioSemana: 3, prevDias: 30, feriados: [] },
+    { id: 7, nome: "Agosto", dias: 31, inicioSemana: 6, prevDias: 31, feriados: [] },
+    { id: 8, nome: "Setembro", dias: 30, inicioSemana: 2, prevDias: 31, feriados: [{dia: 7, nome: "Independência do Brasil"}] },
+    { id: 9, nome: "Outubro", dias: 31, inicioSemana: 4, prevDias: 30, feriados: [{dia: 12, nome: "Nossa Sra. Aparecida"}] },
+    { id: 10, nome: "Novembro", dias: 30, inicioSemana: 0, prevDias: 31, feriados: [{dia: 2, nome: "Finados"}, {dia: 15, nome: "Proclamação da República"}, {dia: 20, nome: "Consciência Negra"}] },
+    { id: 11, nome: "Dezembro", dias: 31, inicioSemana: 2, prevDias: 30, feriados: [{dia: 25, nome: "Natal"}] }
+  ];
+
+  // Índice das turmas reais (aba Calendario_Anual) por nome de mês — pode
+  // haver mais de uma linha por mês (ex.: Programa A + Programa B); usamos
+  // a de maior duração para o grid, já que é a que define o período visível.
+  var TURMA_POR_MES = {};
+  (DADOS.calendarioAnual || []).forEach(function(t){
+    var atual = TURMA_POR_MES[t.mes];
+    if (!atual || (t.dataFimRaw - t.dataInicioRaw) > (atual.dataFimRaw - atual.dataInicioRaw)) {
+      TURMA_POR_MES[t.mes] = t;
+    }
+  });
+
+  function ddmm(dataBr){
+    // "31/08/2026" -> "31/08"
+    var p = String(dataBr || '').split('/');
+    return p.length === 3 ? (p[0] + '/' + p[1]) : '';
+  }
+
+  // Só marca como "dia de treino" os dias úteis (Seg-Sex) dentro do
+  // intervalo da turma, excluindo feriados — fins de semana nunca têm aula.
+  function diasDeTreinoNoMes(turma, monthIndex, feriadosDoMes){
+    if (!turma || !turma.dataInicioRaw || !turma.dataFimRaw) return [];
+    var feriadoSet = {};
+    (feriadosDoMes || []).forEach(function(f){ feriadoSet[f.dia] = true; });
+    var dias = [];
+    var d = new Date(turma.dataInicioRaw);
+    var fim = new Date(turma.dataFimRaw);
+    var guard = 0;
+    while (d.getTime() <= fim.getTime() && guard < 400){
+      var dow = d.getDay(); // 0 = domingo, 6 = sábado
+      if (d.getMonth() === monthIndex && dow !== 0 && dow !== 6 && !feriadoSet[d.getDate()]){
+        dias.push(d.getDate());
+      }
+      d.setDate(d.getDate() + 1);
+      guard++;
+    }
+    return dias;
+  }
+
+  const meses2026 = MESES_BASE.map(function(base){
+    var turma = TURMA_POR_MES[base.nome];
+    var label = turma
+      ? (ddmm(turma.dataInicio) + ' a ' + ddmm(turma.dataFim) + ' • ' + (turma.modalidade || 'Online'))
+      : 'Datas a confirmar';
+    return Object.assign({}, base, {
+      label: label,
+      treino: diasDeTreinoNoMes(turma, base.id, base.feriados)
+    });
+  });
+
+  /* ---------- Turma vigente ----------
+     "Mês atual" do portal NÃO é o mês do relógio: é o da turma em andamento
+     ou, se nenhuma estiver em andamento (ex.: entre o fim de uma turma e o
+     início da próxima), o da PRÓXIMA turma; se não houver próxima, o da
+     última já realizada. Assim, em 30/09 o portal já mostra a turma de
+     Outubro. ---------- */
+  var NOMES_MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+
+  function turmaVigente(){
+    var hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+    var h = hoje.getTime();
+    var lista = Object.keys(TURMA_POR_MES).map(function(k){ return TURMA_POR_MES[k]; })
+      .filter(function(t){ return t.dataInicioRaw && t.dataFimRaw; });
+    var emAndamento = lista.filter(function(t){ return t.dataInicioRaw <= h && h <= t.dataFimRaw; })[0];
+    if (emAndamento) return emAndamento;
+    var futuras = lista.filter(function(t){ return t.dataInicioRaw > h; })
+      .sort(function(a, b){ return a.dataInicioRaw - b.dataInicioRaw; });
+    if (futuras.length) return futuras[0];
+    var passadas = lista.sort(function(a, b){ return b.dataFimRaw - a.dataFimRaw; });
+    return passadas[0] || null;
+  }
+
+  var TURMA_VIGENTE = turmaVigente();
+  var mesVigenteIndex = new Date().getMonth(); // fallback: mês civil
+  if (TURMA_VIGENTE){
+    var idxNome = MESES_BASE.map(function(m){ return m.nome; }).indexOf(TURMA_VIGENTE.mes);
+    mesVigenteIndex = idxNome !== -1 ? idxNome : new Date(TURMA_VIGENTE.dataFimRaw).getMonth();
+  }
+
+  // Texto "Outubro de 2026" do cabeçalho de cada programa: usa o mês do
+  // cronograma que está de fato na planilha (mês da última aula da grade);
+  // se não houver, cai para a turma vigente.
+  function mesDoCronograma(programaKey){
+    var c = DADOS.calendarioSemanal && DADOS.calendarioSemanal[programaKey];
+    var p = c && c.turmaFim ? String(c.turmaFim).split('/') : [];
+    if (p.length === 3) return NOMES_MESES[Number(p[1]) - 1] + ' de ' + p[2];
+    if (TURMA_VIGENTE) return NOMES_MESES[mesVigenteIndex] + ' de ' + new Date(TURMA_VIGENTE.dataFimRaw).getFullYear();
+    return NOMES_MESES[new Date().getMonth()] + ' de ' + new Date().getFullYear();
+  }
+  var mesElProgramaA = document.getElementById('mes-atual-programaa');
+  var mesElProgramaB = document.getElementById('mes-atual-programab');
+  if (mesElProgramaA) mesElProgramaA.textContent = mesDoCronograma('programa-a');
+  if (mesElProgramaB) mesElProgramaB.textContent = mesDoCronograma('programa-b');
+
+  var mesAtualIndex = mesVigenteIndex; // Calendário Anual abre na turma vigente
+
+  // Ícone de calendário pequeno, usado na barra de feriados (SVG inline, sem depender de CDN de ícones)
+  var HOLIDAY_ICON_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 2a1 1 0 0 1 1 1v1h8V3a1 1 0 1 1 2 0v1h1a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1V3a1 1 0 0 1 1-1Zm12 8H5v9h14v-9ZM5 8h14V6H5v2Z"/></svg>';
+
+  function renderMesAnual(){
+    var mes = meses2026[mesAtualIndex];
+    var nomeEl = document.getElementById('mc-month-name');
+    var labelEl = document.getElementById('mc-month-label');
+    var gridEl = document.getElementById('mc-month-grid');
+    if (!mes || !nomeEl || !labelEl || !gridEl) return;
+
+    nomeEl.textContent = mes.nome;
+    labelEl.textContent = mes.label;
+
+    gridEl.innerHTML = '';
+
+    ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'].forEach(function(letra){
+      var dow = document.createElement('div');
+      dow.className = 'dow';
+      dow.textContent = letra;
+      gridEl.appendChild(dow);
+    });
+
+    var feriadoDias = mes.feriados.map(function(f){ return f.dia; });
+
+    // Dias adjacentes do mês anterior (últimos "inicioSemana" dias do mês que terminou)
+    for (var i = 0; i < mes.inicioSemana; i++){
+      var prevDia = mes.prevDias - mes.inicioSemana + 1 + i;
+      var prevCell = document.createElement('div');
+      prevCell.className = 'day-cell dia-adjacente';
+      prevCell.textContent = prevDia;
+      gridEl.appendChild(prevCell);
+    }
+
+    // Dias do mês atual
+    for (var dia = 1; dia <= mes.dias; dia++){
+      var cell = document.createElement('div');
+      cell.className = 'day-cell';
+      if (feriadoDias.indexOf(dia) !== -1){
+        cell.classList.add('holiday');
+      } else if (mes.treino.indexOf(dia) !== -1){
+        cell.classList.add('training');
+      }
+      cell.textContent = dia;
+      gridEl.appendChild(cell);
+    }
+
+    // Dias adjacentes do próximo mês (completa a última linha)
+    var totalCells = mes.inicioSemana + mes.dias;
+    var trailing = (7 - (totalCells % 7)) % 7;
+    for (var j = 1; j <= trailing; j++){
+      var nextCell = document.createElement('div');
+      nextCell.className = 'day-cell dia-adjacente';
+      nextCell.textContent = j;
+      gridEl.appendChild(nextCell);
+    }
+
+    renderFeriadosSidebar(mes);
+  }
+
+  function renderFeriadosSidebar(mes){
+    var listEl = document.getElementById('mc-holidays-list');
+    if (!listEl) return;
+    listEl.innerHTML = '';
+
+    if (!mes.feriados.length){
+      listEl.innerHTML = '<p class="holiday-empty">Sem feriados nacionais neste mês.</p>';
+      return;
+    }
+
+    mes.feriados.forEach(function(f){
+      var item = document.createElement('div');
+      item.className = 'holiday-item';
+      item.innerHTML =
+        '<span class="holiday-icon">' + HOLIDAY_ICON_SVG + '</span>' +
+        '<span class="holiday-text">' +
+          '<span class="holiday-day">Dia ' + f.dia + '</span>' +
+          '<span class="holiday-name">' + f.nome + '</span>' +
+        '</span>';
+      listEl.appendChild(item);
+    });
+  }
+
+  var mesPrevBtn = document.getElementById('mes-prev');
+  var mesNextBtn = document.getElementById('mes-next');
+  if (mesPrevBtn){
+    mesPrevBtn.addEventListener('click', function(){
+      mesAtualIndex = (mesAtualIndex - 1 + meses2026.length) % meses2026.length;
+      renderMesAnual();
+    });
+  }
+  if (mesNextBtn){
+    mesNextBtn.addEventListener('click', function(){
+      mesAtualIndex = (mesAtualIndex + 1) % meses2026.length;
+      renderMesAnual();
+    });
+  }
+  renderMesAnual();
+
+  /* ---------- Mini Calendário "Calendário de Treinamentos" (tela Início) ---------- */
+  var miniMesAtualIndex = mesVigenteIndex; // 0 = Janeiro ... 11 = Dezembro (turma vigente)
+
+  function renderMiniCalendario(){
+    var mes = meses2026[miniMesAtualIndex];
+    var miniCalEl = document.querySelector('.mini-calendar');
+    if (!mes || !miniCalEl) return;
+
+    var monthLabelEl = miniCalEl.querySelector('.mc-nav span');
+    var gridEl = miniCalEl.querySelector('.mc-grid');
+    var eventsEl = miniCalEl.querySelector('.mc-events');
+    if (!monthLabelEl || !gridEl || !eventsEl) return;
+
+    var mesAbrevTitle = mes.nome.substring(0, 3);
+    var mesAbrevUpper = mesAbrevTitle.toUpperCase();
+    monthLabelEl.innerHTML = mesAbrevTitle + ' <strong>2026</strong>';
+
+    gridEl.innerHTML = '';
+
+    ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].forEach(function(letra){
+      var dow = document.createElement('span');
+      dow.className = 'mc-dow';
+      dow.textContent = letra;
+      gridEl.appendChild(dow);
+    });
+
+    var feriadoDias = mes.feriados.map(function(f){ return f.dia; });
+
+    // Dias adjacentes do mês anterior
+    for (var i = 0; i < mes.inicioSemana; i++){
+      var prevDia = mes.prevDias - mes.inicioSemana + 1 + i;
+      var prevCell = document.createElement('span');
+      prevCell.className = 'mc-day dia-adjacente';
+      prevCell.textContent = prevDia;
+      gridEl.appendChild(prevCell);
+    }
+
+    // Dias do mês atual
+    for (var dia = 1; dia <= mes.dias; dia++){
+      var cell = document.createElement('span');
+      cell.className = 'mc-day';
+      if (feriadoDias.indexOf(dia) !== -1){
+        cell.classList.add('holiday');
+      } else if (mes.treino.indexOf(dia) !== -1){
+        cell.classList.add('highlight');
+      }
+      cell.textContent = dia;
+      gridEl.appendChild(cell);
+    }
+
+    // Dias adjacentes do próximo mês (completa a última linha)
+    var totalCells = mes.inicioSemana + mes.dias;
+    var trailing = (7 - (totalCells % 7)) % 7;
+    for (var j = 1; j <= trailing; j++){
+      var nextCell = document.createElement('span');
+      nextCell.className = 'mc-day dia-adjacente';
+      nextCell.textContent = j;
+      gridEl.appendChild(nextCell);
+    }
+
+    // Cards de eventos: feriados do mês + período de treinamento
+    eventsEl.innerHTML = '';
+
+    mes.feriados.forEach(function(f){
+      var card = document.createElement('div');
+      card.className = 'mc-event is-neutral';
+      card.innerHTML =
+        '<div class="mc-event-date">' + String(f.dia).padStart(2, '0') + ' ' + mesAbrevUpper + '</div>' +
+        '<div class="mc-event-text">' + f.nome + '</div>';
+      eventsEl.appendChild(card);
+    });
+
+    var trainingCard = document.createElement('div');
+    trainingCard.className = 'mc-event';
+    trainingCard.innerHTML =
+      '<div class="mc-event-date">' + mes.label + '</div>' +
+      '<div class="mc-event-text">Treinamento Programa A &amp; Programa B</div>';
+    eventsEl.appendChild(trainingCard);
+  }
+
+  var miniNavArrows = document.querySelectorAll('.mini-calendar .mc-nav svg');
+  if (miniNavArrows[0]){
+    miniNavArrows[0].style.cursor = 'pointer';
+    miniNavArrows[0].addEventListener('click', function(){
+      miniMesAtualIndex = (miniMesAtualIndex - 1 + meses2026.length) % meses2026.length;
+      renderMiniCalendario();
+    });
+  }
+  if (miniNavArrows[1]){
+    miniNavArrows[1].style.cursor = 'pointer';
+    miniNavArrows[1].addEventListener('click', function(){
+      miniMesAtualIndex = (miniMesAtualIndex + 1) % meses2026.length;
+      renderMiniCalendario();
+    });
+  }
+  renderMiniCalendario();
+
+  /* ---------- Cronograma semanal: dados REAIS, lidos da planilha externa
+     "Calendário Semanal" (Code.gs -> getCalendarioSemanalTurmaAtual_) e
+     agrupados aqui no cliente por dia e por blocos de até 5 dias ("semanas"
+     de aula), sem precisar de nenhuma estrutura fixa por mês. ---------- */
+
+  var TIPO_ICON = {
+    'Live': '<i class="fa-solid fa-circle"></i> '
+  };
+
+  function tagClassFor(tipo, status){
+    if (String(status || '').toLowerCase().indexOf('feriado') !== -1) return 'tag-feriado';
+    switch(tipo){
+      case 'Live': return 'tag-live';
+      case 'Estudo Individual': return 'tag-curso';
+      case 'Prova': return 'tag-curso';
+      case 'Rota': return 'tag-rota';
+      case 'Checkpoint': return 'tag-rotina';
+      case 'Administrativo': return 'tag-rotina';
+      default: return 'tag-rotina';
+    }
+  }
+
+  function horaLabel(ev){
+    if (!ev.horaInicio && !ev.horaFim) return 'Dia todo';
+    var ini = ev.horaInicio ? ev.horaInicio.replace(':', 'h') : '';
+    var fim = ev.horaFim ? ev.horaFim.replace(':', 'h') : '';
+    if (ini && fim) return ini + ' às ' + fim;
+    return ini || fim || 'Dia todo';
+  }
+
+  function diaLabel(ev){
+    var nomeDia = String(ev.diaSemana || '').replace('-feira', '');
+    var p = String(ev.data || '').split('/');
+    var curta = p.length >= 2 ? (p[0] + '/' + p[1]) : (ev.data || '');
+    return (nomeDia || '—') + (curta ? ' (' + curta + ')' : '');
+  }
+
+  // Agrupa a lista flat de eventos (uma linha por aula) em dias: [{dia, eventos:[...]}]
+  function agruparPorDia(eventos){
+    var mapa = {}; var ordem = [];
+    (eventos || []).forEach(function(ev){
+      if (!mapa[ev.data]) { mapa[ev.data] = { dia: diaLabel(ev), eventos: [] }; ordem.push(ev.data); }
+      mapa[ev.data].eventos.push({ hora: horaLabel(ev), titulo: ev.aula, tipo: ev.tipo, tagClass: tagClassFor(ev.tipo, ev.status) });
+    });
+    return ordem.map(function(k){ return mapa[k]; });
+  }
+
+  // Divide os dias em blocos de até 5 (uma "semana" de aula cada).
+  function dividirEmSemanas(dias){
+    var blocos = [];
+    for (var i = 0; i < dias.length; i += 5){
+      blocos.push(dias.slice(i, i + 5));
+    }
+    return blocos.length ? blocos : [[]];
+  }
+
+  var WEEKDAY_FALLBACK = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'];
+
+  // Renderiza o grid de dias de um bloco/"semana" já calculado.
+  function renderWeek(dias, containerId){
+    var container = document.getElementById(containerId);
+    if (!container) return;
+    dias = dias || [];
+    container.innerHTML = '';
+
+    if (!dias.length){
+      WEEKDAY_FALLBACK.forEach(function(nome){
+        var card = document.createElement('article');
+        card.className = 'day-card is-empty';
+
+        var dayName = document.createElement('h3');
+        dayName.className = 'day-name';
+        dayName.textContent = nome;
+
+        var blocks = document.createElement('div');
+        blocks.className = 'day-blocks empty-state';
+        blocks.innerHTML = '<i class="fa-regular fa-calendar"></i><p>Agenda a confirmar</p>';
+
+        card.appendChild(dayName);
+        card.appendChild(blocks);
+        container.appendChild(card);
+      });
+      return;
+    }
+
+    dias.forEach(function(diaObj){
+      var card = document.createElement('article');
+      card.className = 'day-card';
+
+      var dayName = document.createElement('h3');
+      dayName.className = 'day-name';
+      dayName.textContent = diaObj.dia;
+      card.appendChild(dayName);
+
+      var blocks = document.createElement('div');
+      blocks.className = 'day-blocks';
+
+      var eventos = diaObj.eventos || [];
+      if (!eventos.length){
+        card.classList.add('is-empty');
+        blocks.classList.add('empty-state');
+        blocks.innerHTML = '<i class="fa-regular fa-calendar"></i><p>Agenda a confirmar</p>';
+      } else {
+        eventos.forEach(function(ev){
+          var block = document.createElement('div');
+          block.className = 'time-block';
+
+          var hora = document.createElement('span');
+          hora.className = 'block-time';
+          hora.textContent = ev.hora;
+
+          var titulo = document.createElement('span');
+          titulo.className = 'block-title';
+          titulo.textContent = ev.titulo;
+
+          var tag = document.createElement('span');
+          tag.className = 'tag ' + (ev.tagClass || 'tag-rotina');
+          tag.innerHTML = (TIPO_ICON[ev.tipo] || '') + (ev.tipo || '—');
+
+          block.appendChild(hora);
+          block.appendChild(titulo);
+          block.appendChild(tag);
+          blocks.appendChild(block);
+        });
+      }
+
+      card.appendChild(blocks);
+      container.appendChild(card);
+    });
+  }
+
+  /* ---------- Monta as abas de semana dinamicamente, a partir dos dados
+     reais da turma atual de cada programa (sem estrutura fixa por mês). --*/
+  function montarCronogramaPrograma(programaKey, tabsElId, containerId){
+    var tabsEl = document.getElementById(tabsElId);
+    if (!tabsEl) return;
+
+    var fonte = (DADOS.calendarioSemanal && DADOS.calendarioSemanal[programaKey]) || { eventos: [] };
+    var dias = agruparPorDia(fonte.eventos);
+    var semanas = dividirEmSemanas(dias);
+
+    tabsEl.innerHTML = semanas.map(function(_, idx){
+      var rotulo = (semanas.length === 1) ? 'Semana Única'
+        : (idx === semanas.length - 1 && semanas[idx].length <= 1) ? 'Encerramento'
+        : 'Semana ' + (idx + 1);
+      return '<button class="pill-tab-btn tab-btn' + (idx === 0 ? ' active' : '') + '" role="tab" aria-selected="' + (idx === 0 ? 'true' : 'false') + '" data-idx="' + idx + '">' + rotulo + '</button>';
+    }).join('');
+
+    var buttons = tabsEl.querySelectorAll('.tab-btn');
+    buttons.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        buttons.forEach(function(b){ b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        renderWeek(semanas[Number(btn.getAttribute('data-idx'))], containerId);
+      });
+    });
+
+    renderWeek(semanas[0], containerId);
+  }
+
+  montarCronogramaPrograma('programa-a', 'tabs-programaA', 'week-cards-programaA');
+  montarCronogramaPrograma('programa-b', 'tabs-programaB', 'week-cards-programaB');
+
+  /* ---------- Abas Programa A / Programa B (tela de Inscritos) ---------- */
+  var tabProgramaA = document.getElementById('tab-programaa');
+  var tabProgramaB = document.getElementById('tab-programab');
+  var panelProgramaA = document.getElementById('panel-programaa');
+  var panelProgramaB = document.getElementById('panel-programab');
+
+  function activateTab(tab, panel, otherTab, otherPanel){
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+    panel.classList.add('active');
+    otherTab.classList.remove('active');
+    otherTab.setAttribute('aria-selected', 'false');
+    otherPanel.classList.remove('active');
+  }
+
+  tabProgramaA.addEventListener('click', function(){
+    activateTab(tabProgramaA, panelProgramaA, tabProgramaB, panelProgramaB);
+  });
+  tabProgramaB.addEventListener('click', function(){
+    activateTab(tabProgramaB, panelProgramaB, tabProgramaA, panelProgramaA);
+  });
+
+  /* ---------- Listas de inscritos (dados estáticos, atualizados manualmente todo mês) ---------- */
+  /* ---------- Listas de inscritos: dados REAIS, injetados pelo servidor
+     (Code.gs -> getInscritos), sem nenhum dado fixo aqui. ---------- */
+  var inscritosProgramaA = (DADOS.inscritos && DADOS.inscritos['programa-a']) || [];
+  var inscritosProgramaB = (DADOS.inscritos && DADOS.inscritos['programa-b']) || [];
+
+  function badgeClassFor(etiqueta){
+    var norm = String(etiqueta || '').trim().toUpperCase();
+    if (norm.indexOf('NOVO') !== -1) return 'badge-novos';
+    if (norm.indexOf('TROCA') !== -1) return 'badge-troca';
+    if (norm.indexOf('LEGADO') !== -1) return 'badge-legado';
+    return 'badge-legado';
+  }
+
+  function renderTable(tableId, rows){
+    var table = document.getElementById(tableId);
+    var tbody = table.querySelector('tbody');
+    tbody.innerHTML = '';
+
+    if (!rows.length){
+      tbody.innerHTML = '<tr><td colspan="4"><div class="status-msg"><i class="fa-regular fa-folder-open"></i>Nenhum inscrito encontrado para este mês.</div></td></tr>';
+      return;
+    }
+
+    rows.forEach(function(row){
+      var tr = document.createElement('tr');
+
+      var tdNome = document.createElement('td');
+      tdNome.textContent = row.nome;
+
+      var tdFranquia = document.createElement('td');
+      tdFranquia.textContent = row.franquia;
+
+      var tdFuncao = document.createElement('td');
+      tdFuncao.textContent = row.funcao;
+
+      var tdEtiqueta = document.createElement('td');
+      if (row.etiqueta){
+        var span = document.createElement('span');
+        span.className = 'badge ' + badgeClassFor(row.etiqueta);
+        span.textContent = row.etiqueta;
+        tdEtiqueta.appendChild(span);
+      }
+
+      tr.appendChild(tdNome);
+      tr.appendChild(tdFranquia);
+      tr.appendChild(tdFuncao);
+      tr.appendChild(tdEtiqueta);
+      tbody.appendChild(tr);
+    });
+  }
+
+  renderTable('table-programaa', inscritosProgramaA);
+  renderTable('table-programab', inscritosProgramaB);
+
+})();
+</script>
+
+<? } ?>
+
+</body>
+</html>
